@@ -1,0 +1,51 @@
+[
+    {
+        "ip": "127.0.0.1",
+        "port": 80,
+        "service": "http",
+        "version": "Apache httpd",
+        "os": "Microsoft Windows 11 24H2 - 25H2",
+        "http_info": {
+            "server": "Apache",
+            "x_powered_by": null,
+            "status_code": 200
+        },
+        "scanned_at": "2026-05-05 16:02:17"
+    },
+    {
+        "ip": "127.0.0.1",
+        "port": 135,
+        "service": "msrpc",
+        "version": "Microsoft Windows RPC",
+        "os": "Microsoft Windows 11 24H2 - 25H2",
+        "http_info": {},
+        "scanned_at": "2026-05-05 16:02:17"
+    },
+    {
+        "ip": "127.0.0.1",
+        "port": 445,
+        "service": "microsoft-ds",
+        "version": "",
+        "os": "Microsoft Windows 11 24H2 - 25H2",
+        "http_info": {},
+        "scanned_at": "2026-05-05 16:02:17"
+    },
+    {
+        "ip": "127.0.0.1",
+        "port": 843,
+        "service": "",
+        "version": "",
+        "os": "Microsoft Windows 11 24H2 - 25H2",
+        "http_info": {},
+        "scanned_at": "2026-05-05 16:02:17"
+    },
+    {
+        "ip": "127.0.0.1",
+        "port": 3306,
+        "service": "mysql",
+        "version": "MySQL 5.1.41-community",
+        "os": "Microsoft Windows 11 24H2 - 25H2",
+        "http_info": {},
+        "scanned_at": "2026-05-05 16:02:17"
+    }
+]
