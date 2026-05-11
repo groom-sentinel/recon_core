@@ -69,7 +69,7 @@ def test_dns_records_default_empty() -> None:
 def test_dns_records_frozen() -> None:
     dns = DnsRecords(a=["1.2.3.4"])
     with pytest.raises(ValidationError):
-        dns.a = ["5.6.7.8"]  # type: ignore[misc]
+        dns.a = ["5.6.7.8"]
 
 
 # === WhoisInfo ===
