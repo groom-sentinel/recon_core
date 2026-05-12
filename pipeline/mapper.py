@@ -94,6 +94,8 @@ def build_unified_records(
 
     # 1) Discovery -> base asset nodes
     for raw in discovery_results:
+        if hasattr(raw, "model_dump"):
+            raw = raw.model_dump(mode="json")
         discovery = AssetDiscoveryRecord.model_validate(raw)
         key = discovery.domain or discovery.ip
         if key is None:
