@@ -9,15 +9,24 @@ class ScanningEngine:
         # Nmap 엔진 초기화
         self.nm = nmap.PortScanner()
 
-    def load_targets(self, file_path='targets.txt'):
+    def load_targets(self, file_path='targets.json'): # 확장자 .json 추가
         if not os.path.exists(file_path):
-            print(f"[!] {file_path} 파일이 없습니다. 127.0.0.1로 기본 스캔을 진행합니다.")
+            print(f"[!] {file_path} 파일이 없습니다. 127.0.0.1로 진행합니다.")
             return ['127.0.0.1']
-        
-        with open(file_path, 'r') as f:
-            targets = [line.strip() for line in f if line.strip()]
-            return targets
 
+        if file_path.endswith('.json'):
+            with open(file_path, 'r', encoding='utf-8') as f:
+                try:
+                    data = json.load(f)
+                    targets = [item.get('ip') or item.get('domain') for item in data if item.get('ip') or item.get('domain')]
+                    return targets
+                except Exception as e:
+                    print(f"[!] JSON 파싱 에러: {e}")
+                    return ['127.0.0.1']
+        else:
+            with open(file_path, 'r') as f:
+                return [line.strip() for line in f if line.strip()]
+            
     def run_scan(self, targets):
         all_results = []
         total = len(targets)
@@ -55,14 +64,18 @@ class ScanningEngine:
         return all_results
 
     def parse_info(self, host, proto, port):
-        #JSON 구조
         port_info = self.nm[host][proto][port]
+        
+        # OS 정보 안전하게 가져오기 (이 부분이 에러 해결 핵심!)
+        os_matches = self.nm[host].get('osmatch', [])
+        os_name = os_matches[0].get('name', 'Unknown') if os_matches else 'Unknown'
+
         data = {
             "ip": host,
             "port": port,
             "service": port_info['name'],
             "version": f"{port_info['product']} {port_info['version']}".strip(),
-            "os": self.nm[host].get('osmatch', [{}])[0].get('name', 'Unknown'),
+            "os": os_name,
             "http_info": {},
             "scanned_at": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
@@ -90,11 +103,11 @@ class ScanningEngine:
 if __name__ == "__main__":
     engine = ScanningEngine()
     
-    target_list = engine.load_targets()
+    target_list = engine.load_targets('targets.json')
     
     final_results = engine.run_scan(target_list)
     
     with open('scan_result.json', 'w', encoding='utf-8') as f:
         json.dump(final_results, f, indent=4, ensure_ascii=False)
     
-    print(f"\n[+] 저장 완료 : scan_result.json")
+    print(f"\n[+] 테스트 완료! 결과가 scan_result.json에 저장되었습니다.")
