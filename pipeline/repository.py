@@ -7,16 +7,23 @@ import os
 from datetime import datetime
 from typing import Iterable
 
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 
 from pipeline.models import UnifiedAssetRecord
 
+load_dotenv()
+
 
 def _to_iso(value: datetime | None) -> str | None:
     if value is None:
         return None
-    return value.isoformat()
+    from datetime import timezone as _tz
+    # MySQL DATETIME은 timezone offset 미지원 — naive UTC string으로 변환
+    if value.tzinfo is not None:
+        value = value.astimezone(_tz.utc).replace(tzinfo=None)
+    return value.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def _build_engine() -> Engine:
