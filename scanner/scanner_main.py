@@ -41,7 +41,7 @@ class ScanningEngine:
                 # --version-intensity 7: 탐지 정밀도 (0~9, 7이 적당함)
                 # --open: 열려 있는 포트만 결과에 포함
                 # --host-timeout 3m: 한 IP당 최대 3분까지만 대기 (무한 대기 방지)
-                scan_args = '-sV --version-intensity 7 -O --open --host-timeout 3m -T4'
+                scan_args = '-sV --version-intensity 7 --open --host-timeout 3m -T4'
                 
                 self.nm.scan(target, arguments=scan_args)
                 
